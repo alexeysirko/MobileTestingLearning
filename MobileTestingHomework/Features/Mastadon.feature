@@ -7,3 +7,6 @@ Scenario: Startup/shutdown of applications, searching for items
 
 	When I close Mastadon application
 	Then Mastadon application is closed
+
+	When I open Mastadon application
+		And I log in the app
