@@ -11,13 +11,13 @@ namespace MobileTestingHomework.StepDefinitions
         private readonly WelcomeScreen _welcomeScreen = new();
         private const string APP_ID = "org.joinmastodon.android";
 
-        [When(@"I open Mastadon application")]
+        [When(@"Open Mastadon application")]
         public void OpenMastadonApp()
         {
             AqualityServices.Application.Driver.ActivateApp(APP_ID);
         }
 
-        [When(@"I close Mastadon application")]
+        [When(@"Close Mastadon application")]
         public void WhenICloseMastadonApplication()
         {
             AqualityServices.Application.Driver.TerminateApp(APP_ID);

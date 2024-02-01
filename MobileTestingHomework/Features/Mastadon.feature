@@ -2,14 +2,17 @@
 
 
 Scenario: Startup/shutdown of applications, searching for items
-	When I open Mastadon application
+	When Open Mastadon application
 	Then Welcome screen is opened
 
-	When I close Mastadon application
+	When Close Mastadon application
 	Then Mastadon application is closed
 
-	When I open Mastadon application
+	When Open Mastadon application
 	Then Welcome screen is opened
 		
-	When I log in the app
+	When Log in the app
 	Then Home screen is opened
+
+	When Tap 'Search' tab
+	Then Posts screen is opened

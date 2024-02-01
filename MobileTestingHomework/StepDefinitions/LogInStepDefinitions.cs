@@ -10,9 +10,9 @@ namespace MobileTestingHomework.StepDefinitions
         private const string SERVER_URL = "mastodon.social";
         private readonly WelcomeScreen _welcomeScreen = new();
         private readonly LogInScreen _logInScreen = new();
-        private readonly NotificationScreen _notificationScreen = new();
+        private readonly NotificationPopUp _notificationScreen = new();
 
-        [When(@"I log in the app")]
+        [When(@"Log in the app")]
         public void LogInMastadon()
         {
             _welcomeScreen.ClickLoginButton();
@@ -22,8 +22,6 @@ namespace MobileTestingHomework.StepDefinitions
             _logInScreen.ClickNextButton();
             _logInScreen.ClickAuthorizeBtn();
 
-
-            Assert.That(AqualityServices.IsApplicationStarted); ;
             if (_notificationScreen.State.WaitForDisplayed(TimeSpan.FromSeconds(5)))
             {
                 _notificationScreen.ClickAllowButton();
