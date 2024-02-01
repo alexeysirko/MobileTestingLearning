@@ -9,4 +9,7 @@ Scenario: Startup/shutdown of applications, searching for items
 	Then Mastadon application is closed
 
 	When I open Mastadon application
-		And I log in the app
+	Then Welcome screen is opened
+		
+	When I log in the app
+	Then Home screen is opened

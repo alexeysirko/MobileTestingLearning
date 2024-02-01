@@ -13,8 +13,9 @@ namespace MobileTestingHomework.Screens
         private readonly static By s_serverUrlTxbXpath = By.Id("org.joinmastodon.android:id/search_edit");       
         private readonly ITextBox _serverUrlTxb = ElementFactory.GetTextBox(s_serverUrlTxbXpath, "Server Url");
         
-        private readonly IEnumerable<IRadioButton> _serversRadioBtns = ElementFactory.FindElements<IRadioButton>(By.XPath("//android.widget.RadioButton[@resource-id='org.joinmastodon.android:id/radiobtn']"), "Servers picks");
+        private readonly IRadioButton _firstServersRadioBtn = ElementFactory.GetRadioButton(By.XPath("//android.widget.RadioButton[@resource-id='org.joinmastodon.android:id/radiobtn']"), "First server pick");
         private readonly IButton _nextBtn = ElementFactory.GetButton(By.Id("org.joinmastodon.android:id/btn_next"), "Next");
+        private readonly IButton _authorizeBtn = ElementFactory.GetButton(By.XPath("//android.widget.Button[@text='Authorize']"), "Authorize");
 
         public LogInScreen() : base(s_serverUrlTxbXpath, "Log In")
         {
@@ -27,7 +28,7 @@ namespace MobileTestingHomework.Screens
         }
         public void ClickFirstServerRadioButton()
         {
-            _serversRadioBtns.First().Click();
+            _firstServersRadioBtn.Click();
         }
 
         public void ClickNextButton()
@@ -35,5 +36,9 @@ namespace MobileTestingHomework.Screens
             _nextBtn.Click();
         }
 
+        public void ClickAuthorizeBtn()
+        {
+            _authorizeBtn.Click();
+        }
     }
 }
