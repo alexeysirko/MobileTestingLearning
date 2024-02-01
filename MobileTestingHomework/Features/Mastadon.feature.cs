@@ -73,6 +73,18 @@ namespace MobileTestingHomework.Features
             testRunner.CollectScenarioErrors();
         }
         
+        public virtual void FeatureBackground()
+        {
+#line 3
+#line hidden
+#line 4
+ testRunner.Given("Open Mastadon application", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 5
+ testRunner.Then("Welcome screen is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+        }
+        
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Startup/shutdown of applications, searching for items")]
         public void StartupShutdownOfApplicationsSearchingForItems()
@@ -80,7 +92,7 @@ namespace MobileTestingHomework.Features
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Startup/shutdown of applications, searching for items", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 4
+#line 7
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -90,11 +102,8 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
- testRunner.When("Open Mastadon application", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 6
- testRunner.Then("Welcome screen is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 3
+this.FeatureBackground();
 #line hidden
 #line 8
  testRunner.When("Close Mastadon application", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -119,6 +128,12 @@ this.ScenarioInitialize(scenarioInfo);
 #line hidden
 #line 18
  testRunner.Then("Posts screen is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 20
+ testRunner.When("Open the first post", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 21
+ testRunner.Then("The first post is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

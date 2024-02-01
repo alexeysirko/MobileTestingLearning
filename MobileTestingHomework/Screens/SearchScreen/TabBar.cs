@@ -1,7 +1,7 @@
 ﻿using Aquality.Appium.Mobile.Elements.Interfaces;
 using Aquality.Appium.Mobile.Screens;
 
-namespace MobileTestingHomework.Screens
+namespace MobileTestingHomework.Screens.SearchTab
 {
     internal class TabBar : Screen
     {

@@ -1,6 +1,4 @@
-using Aquality.Appium.Mobile.Applications;
 using MobileTestingHomework.Screens;
-using NUnit.Framework;
 
 namespace MobileTestingHomework.StepDefinitions
 {

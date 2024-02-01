@@ -1,4 +1,4 @@
-﻿using MobileTestingHomework.Screens;
+﻿using MobileTestingHomework.Screens.SearchTab;
 
 namespace MobileTestingHomework.StepDefinitions
 {

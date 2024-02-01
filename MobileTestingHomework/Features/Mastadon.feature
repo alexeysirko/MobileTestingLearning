@@ -1,10 +1,10 @@
 ﻿Feature: Mastadon
 
-
-Scenario: Startup/shutdown of applications, searching for items
-	When Open Mastadon application
+Background:
+	Given Open Mastadon application
 	Then Welcome screen is opened
 
+Scenario: Startup/shutdown of applications, searching for items
 	When Close Mastadon application
 	Then Mastadon application is closed
 
@@ -16,3 +16,6 @@ Scenario: Startup/shutdown of applications, searching for items
 
 	When Tap 'Search' tab
 	Then Posts screen is opened
+
+	When Open the first post
+	Then The first post is opened
