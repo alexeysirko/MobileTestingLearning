@@ -41,3 +41,15 @@ Scenario: Interaction with elements
 	Then Post screen with provided # is opened
 
 	When Scroll down to the '4' post
+
+@HW2
+Scenario: Contexts
+	When Log in the app
+	Then Home screen is opened
+
+	When Tap 'Search' tab
+	Then Posts screen is opened
+
+	Given Get the current context
+	When Check if there are other contexts
+	 And If those contexts are there, switch to them
