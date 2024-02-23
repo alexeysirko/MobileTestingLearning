@@ -9,10 +9,6 @@ namespace MobileTestingHomework.Hooks
         [AfterScenario]
         public static void AfterFeature(FeatureContext featureContext)
         {
-            if(AqualityServices.IsApplicationStarted)
-            {
-                AqualityServices.Application.Driver.TerminateApp(MastadonConstants.APP_ID);
-            }
             AqualityServices.Application.Quit();
         }
     }

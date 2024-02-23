@@ -20,7 +20,7 @@ namespace MobileTestingHomework.StepDefinitions
             _logInScreen.ClickNextButton();
             _logInScreen.ClickAuthorizeBtn();
 
-            if (_notificationScreen.State.WaitForDisplayed(TimeSpan.FromSeconds(5)))
+            if (_notificationScreen.State.WaitForDisplayed(TimeSpan.FromSeconds(10)))
             {
                 _notificationScreen.ClickAllowButton();
             }
