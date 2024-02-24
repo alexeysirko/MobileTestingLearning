@@ -2,13 +2,16 @@
 using Aquality.Appium.Mobile.Applications;
 using Aquality.Appium.Mobile.Elements.Interfaces;
 using Aquality.Appium.Mobile.Screens;
+using Aquality.Selenium.Core.Elements;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Appium.MultiTouch;
+using System.Drawing;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace MobileTestingHomework.Screens.SearchTab
 {
     internal class PostsScreen : Screen
     {
-        private ILabel _firstAuthorName = ElementFactory.GetLabel(By.Id("org.joinmastodon.android:id/name"), "First author Names");
-
         private readonly ILabel _postFromLabel = ElementFactory.GetLabel(
             By.XPath("//*[@resource-id='org.joinmastodon.android:id/toolbar']//android.widget.TextView[contains(@text,'Post from')]")
             , "post from");    
@@ -17,13 +20,15 @@ namespace MobileTestingHomework.Screens.SearchTab
             By.XPath("//*[@resource-id='org.joinmastodon.android:id/list']/android.widget.RelativeLayout[1]")
             , "First Post Header");
 
+        private readonly ILabel _firstAuthorName = ElementFactory.GetLabel(By.Id("org.joinmastodon.android:id/name"), "First author Names");
         private readonly ILabel _hashtagTitle = ElementFactory.GetLabel(By.Id("org.joinmastodon.android:id/title"), "Hashtag title");
         private readonly IButton _backButton = ElementFactory.GetButton(By.XPath("//android.widget.ImageButton[@content-desc='Back']"), "Back");
-        //private List<IButton> ReplyButtons 
-        //    => ElementFactory.FindElements<IButton>(By.XPath("//android.widget.Button[@resource-id='org.joinmastodon.android:id/reply_btn']"), "Reply buttons")
-        //    .ToList();
-        private IButton ReplyButton => ElementFactory.GetButton(By.Id("org.joinmastodon.android:id/reply_btn"), "Reply button");
+        private readonly IButton _replyButton = ElementFactory.GetButton(By.Id("org.joinmastodon.android:id/reply_btn"), "Reply button");
+        private readonly IButton _postsOption = ElementFactory.GetButton(By.XPath("//android.widget.LinearLayout[@content-desc='Posts']"), "Posts option");
+        private List<ILabel> PostTexts => ElementFactory.FindElements<ILabel>(By.XPath("//*[@resource-id='org.joinmastodon.android:id/text']"), "Post texts").ToList();
+        private ILabel PostByText(string text) => ElementFactory.GetLabel(By.XPath($"//*[@resource-id='org.joinmastodon.android:id/text' and @text='{text}']"), "postByText", ElementState.ExistsInAnyState);
 
+        private HashSet<string> _uniquePostTexts = new();
 
         public PostsScreen() : base(By.Id("org.joinmastodon.android:id/discover_posts"), "Posts")
         {
@@ -50,15 +55,58 @@ namespace MobileTestingHomework.Screens.SearchTab
             return _postFromLabel.GetAttribute("text");
         }
 
-        public void ScrollToPostByNumber(int postNumber)
+        public void ScrollToPostWithSwipe(int postNumber)
         {
-            //It generates locator only for 2 posts. So I scroll to next post {postNumber} times           
             for (int i = 0; i < postNumber-1; i++)
             {
-                var backButtonLocation = _backButton.GetElement().Location;
-                var replyButtonLocation = ReplyButton.GetElement().Location;     
-                AqualityServices.TouchActions.SwipeWithLongPress(replyButtonLocation, backButtonLocation);
+                _replyButton.TouchActions.SwipeWithLongPress(_backButton.GetElement().Location);
             }
+        }
+
+        public void ScrollToPostWithSwipeAtCoordinates(int postNumber)
+        {
+            //I tried everything to use scrollToElement in this step. But coudln't do anything. So I used Swipe in this step and scrollToElement in next step (switched steps)
+            int countOfUniquePosts = 0;
+            while (countOfUniquePosts < postNumber)
+            {
+                countOfUniquePosts = AddPostTextsAndGetAmountOfUniquePosts();
+                _replyButton.TouchActions.SwipeWithLongPress(_postsOption.GetElement().Location);
+            }
+        }
+
+        public void GoBackToPostWithScrollToElement(int postNumber)
+        {
+            string expectedText = _uniquePostTexts.ElementAt(postNumber - 1);
+            PostByText(expectedText).TouchActions.ScrollToElement(SwipeDirection.Up);
+        }
+
+        public void SwipeToPostUsingAppium(int postNumber)
+        {
+            int countOfUniquePosts = 0;
+            while (countOfUniquePosts < postNumber)
+            {
+                countOfUniquePosts = AddPostTextsAndGetAmountOfUniquePosts();
+                var xPostion = ScreenElement.GetElement().Location.X + ScreenElement.GetElement().Size.Width / 2;
+                var startYPosition = ScreenElement.GetElement().Location.Y + ScreenElement.GetElement().Size.Height * 0.1;
+                var endYPosition = ScreenElement.GetElement().Location.Y + ScreenElement.GetElement().Size.Height - ScreenElement.GetElement().Size.Height * 0.1;
+                new TouchAction(AqualityServices.Application.Driver)
+                    .Press(xPostion, startYPosition)
+                    .MoveTo(xPostion, endYPosition)
+                    .Release()
+                    .Perform();
+            }
+        }
+
+        public bool IsPostDisplayed(int postNumber)
+        {
+            string expectedText = _uniquePostTexts.ElementAt(postNumber - 1);
+            return PostTexts.Any(post => post.Text == expectedText);
+        }
+
+        public int AddPostTextsAndGetAmountOfUniquePosts()
+        {
+             _uniquePostTexts.Add(PostTexts.First().Text);
+            return _uniquePostTexts.Count;
         }
     }
 }

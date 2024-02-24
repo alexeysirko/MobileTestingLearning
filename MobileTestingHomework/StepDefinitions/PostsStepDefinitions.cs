@@ -5,7 +5,7 @@ namespace MobileTestingHomework.StepDefinitions
 {
     [Binding]
     internal class PostsStepDefinitions : BaseStepDefinitions
-    {      
+    {
         private readonly ScenarioContext _scenarioContext;
         private readonly PostsScreen _postsScreen = new();
         private readonly SearchScreen _searchScreen = new();
@@ -28,7 +28,31 @@ namespace MobileTestingHomework.StepDefinitions
         [When(@"Scroll down to the '(.*)' post")]
         public void ScrollDownToThePostByNumber(int postNumber)
         {
-            _postsScreen.ScrollToPostByNumber(postNumber);
+            _postsScreen.ScrollToPostWithSwipe(postNumber);
+        }
+
+        [When(@"Scroll to post '(.*)' with Swipe")]
+        public void ScrollWithSwipe(int postNumber)
+        {
+            _postsScreen.ScrollToPostWithSwipeAtCoordinates(postNumber);
+        }
+
+        [When(@"Go back to the first post using scrollToElement")]
+        public void ScrollBack()
+        {
+            _postsScreen.GoBackToPostWithScrollToElement(1);
+        }
+
+        [When(@"Swipe to post '(.*)' with Appium")]
+        public void SwipeWithAppium(int postNumber)
+        {
+            _postsScreen.SwipeToPostUsingAppium(postNumber);
+        }
+
+        [Then(@"Post '(.*)' is Displayed")]
+        public void IsPostDisplayed(int postNumber)
+        {
+            Assert.That(_postsScreen.IsPostDisplayed(postNumber));
         }
 
         [Then(@"Post screen with provided # is opened")]
