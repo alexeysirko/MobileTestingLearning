@@ -28,7 +28,7 @@ namespace MobileTestingHomework.Screens.SearchTab
         private List<ILabel> PostTexts => ElementFactory.FindElements<ILabel>(By.XPath("//*[@resource-id='org.joinmastodon.android:id/text']"), "Post texts").ToList();
         private ILabel PostByText(string text) => ElementFactory.GetLabel(By.XPath($"//*[@resource-id='org.joinmastodon.android:id/text' and @text='{text}']"), "postByText", ElementState.ExistsInAnyState);
 
-        private HashSet<string> _uniquePostTexts = new();
+        private Dictionary<string, int> _uniquePostTexts = new();
 
         public PostsScreen() : base(By.Id("org.joinmastodon.android:id/discover_posts"), "Posts")
         {
@@ -76,7 +76,7 @@ namespace MobileTestingHomework.Screens.SearchTab
 
         public void GoBackToPostWithScrollToElement(int postNumber)
         {
-            string expectedText = _uniquePostTexts.ElementAt(postNumber - 1);
+            string expectedText = _uniquePostTexts.ElementAt(postNumber - 1).Key;
             PostByText(expectedText).TouchActions.ScrollToElement(SwipeDirection.Up);
         }
 
@@ -86,9 +86,9 @@ namespace MobileTestingHomework.Screens.SearchTab
             while (countOfUniquePosts < postNumber)
             {
                 countOfUniquePosts = AddPostTextsAndGetAmountOfUniquePosts();
-                var xPostion = ScreenElement.GetElement().Location.X + ScreenElement.GetElement().Size.Width / 2;
-                var startYPosition = ScreenElement.GetElement().Location.Y + ScreenElement.GetElement().Size.Height * 0.1;
-                var endYPosition = ScreenElement.GetElement().Location.Y + ScreenElement.GetElement().Size.Height - ScreenElement.GetElement().Size.Height * 0.1;
+                var xPostion = 1;
+                var startYPosition = ScreenElement.GetElement().Location.Y + ScreenElement.GetElement().Size.Height- ScreenElement.GetElement().Size.Height * 0.1;
+                var endYPosition = ScreenElement.GetElement().Location.Y + ScreenElement.GetElement().Size.Height * 0.1;
                 new TouchAction(AqualityServices.Application.Driver)
                     .Press(xPostion, startYPosition)
                     .MoveTo(xPostion, endYPosition)
@@ -99,13 +99,16 @@ namespace MobileTestingHomework.Screens.SearchTab
 
         public bool IsPostDisplayed(int postNumber)
         {
-            string expectedText = _uniquePostTexts.ElementAt(postNumber - 1);
+            string expectedText = _uniquePostTexts.ElementAt(postNumber - 1).Key;
             return PostTexts.Any(post => post.Text == expectedText);
         }
 
         public int AddPostTextsAndGetAmountOfUniquePosts()
         {
-             _uniquePostTexts.Add(PostTexts.First().Text);
+            foreach(var postText in PostTexts)
+            {
+                _uniquePostTexts.TryAdd(postText.Text, 0);
+            }
             return _uniquePostTexts.Count;
         }
     }
